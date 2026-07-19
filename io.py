@@ -5,22 +5,29 @@
 def INFO_to_print(code: str):
     keyword, text = code.split(" ", 1)
     if keyword!="[INFO]":
-        raise SyntaxError(f"Expected `[INFO]` got `{keyword}`")
+        raise SyntaxError(f"Expected `INFO` got `{keyword}`.")
     text = text.removeprefix("[").removesuffix("]")
     return f"print({text})"
 
-# [INPUT] [<tip word>] [<multilines>] → input(<tip word>)
-def INPUT_to_input(code: str):
-    keyword = code.split(" ", 1)[0]
-    if keyword != "[INPUT]":
-        raise SyntaxError(f"Expected `[INPUT]` got `{keyword}`")
+# [VAR] [<var name>] [INPUT] [<tip word>] [<multilines>] → var = input(<tip word>)
+def INPUT_to_input(code: str) -> str:
     rest = code.split(" ", 1)[1]
     inner = rest.removeprefix("[").removesuffix("]")
     parts = inner.split("][")
-    if len(parts) != 2:
-        raise SyntaxError("Usage: [INPUT] [<tip word>] [<multilines> (bool)]")
-    tip_word = parts[0]
-    multilines = parts[1].lower() == "true"
+    if len(parts) != 4:
+        raise SyntaxError("Usage: [VAR] [<var name>] [INPUT] [<tip word>] [<multilines> (bool)]")
+    var_name = parts[0].strip()
+    keyword = parts[1]
+    tip_word = parts[2].strip()
+    multilines = parts[3].lower() in ("true", "1", "yes", "on")
+    if not var_name:
+        raise SyntaxError("Var name cannot be empty.")
+    if not var_name.isidentifier():
+        raise SyntaxError(f"Invalid var name: {var_name}.")
+    if keyword != "INPUT":
+        raise SyntaxError(f"Expected `INPUT`, got `{keyword}`.")
+    if not tip_word:
+        raise SyntaxError("Tip word cannot be empty")
     if multilines:
         return f'''\
 print("{tip_word} (use EOF to finish)")
@@ -30,10 +37,11 @@ while True:
         line = input()
     except EOFError:
         break
+    except KeyboardInterrupt:
+        print("\\\\nCanceled input.")
+        break
     lines.append(line)
-user_input = "\\n".join(lines)
+{var_name} = "\\\\n".join(lines)
 '''
     else:
-        return f'''\
-user_input = input("{tip_word}: ")
-'''
+        return f'{var_name} = input("{tip_word}: ")'
