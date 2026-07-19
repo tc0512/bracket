@@ -1,4 +1,5 @@
-# bracket/io.py
+#!/usr/bin/env python3
+# bracket/IO.py
 # manage I/O operation
 
 # [INFO] [<text>] → print(<text>)
