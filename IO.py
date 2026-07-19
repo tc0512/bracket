@@ -10,13 +10,13 @@ def INFO_to_print(code: str):
     text = text.removeprefix("[").removesuffix("]")
     return f"print({text})"
 
-# [VAR] [<var name>] [INPUT] [<tip word>] [<multilines>] → var = input(<tip word>)
+# [VAR] [<var name>] [INPUT] [<tip word> (don't need quotation marks)] [<multilines> (bool)] → var = input(<tip word>)
 def INPUT_to_input(code: str) -> str:
     rest = code.split(" ", 1)[1]
     inner = rest.removeprefix("[").removesuffix("]")
-    parts = inner.split("][")
+    parts = inner.split("] [")
     if len(parts) != 4:
-        raise SyntaxError("Usage: [VAR] [<var name>] [INPUT] [<tip word>] [<multilines> (bool)]")
+        raise SyntaxError("Usage: [VAR] [<var name>] [INPUT] [<tip word> (don't need quotation marks)] [<multilines> (bool)]")
     var_name = parts[0].strip()
     keyword = parts[1]
     tip_word = parts[2].strip()
