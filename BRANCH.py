@@ -2,6 +2,8 @@
 # bracket/BRANCH.py
 # manage branch sentences
 
+import re
+
 from .IO import INFO_to_print, INPUT_to_input
 from .VAR import VAR_to_varname_equal
 
@@ -11,10 +13,15 @@ def indent(code: str, spaces: int = 4) -> str:
 
 def parse_condition(line: str) -> str:
     """Extract conditions from [IF] [cond] or [ELSEIF] [cond]"""
+    line = line.lstrip()
     parts = line.split(" ", 1)
     if len(parts) < 2:
         raise SyntaxError(f"Missing condition: {line}")
-    return parts[1].removeprefix("[").removesuffix("]")
+    rest = parts[1]
+    match = re.search(r'\[([^\]]*)\]', rest)
+    if match:
+        return match.group(1)
+    raise SyntaxError(f"Cannot parse condition: {line}")
 
 def parse_block(lines: list[str], start: int) -> tuple[list[str], int]:
     """Analysis the {} blocks,return the list of the contents of the blocks and the  finish position."""

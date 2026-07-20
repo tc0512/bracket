@@ -4,6 +4,7 @@
 
 # [INFO] [<text>] → print(<text>)
 def INFO_to_print(code: str):
+    code = code.lstrip()
     keyword, text = code.split(" ", 1)
     if keyword!="[INFO]":
         raise SyntaxError(f"Expected `INFO` got `{keyword}`.")
@@ -12,6 +13,7 @@ def INFO_to_print(code: str):
 
 # [VAR] [<var name>] [INPUT] [<tip word> (don't need quotation marks)] [<multilines> (bool)] → var = input(<tip word>)
 def INPUT_to_input(code: str) -> str:
+    code = code.lstrip()
     rest = code.split(" ", 1)[1]
     inner = rest.removeprefix("[").removesuffix("]")
     parts = inner.split("] [")

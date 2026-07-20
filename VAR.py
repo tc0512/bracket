@@ -4,6 +4,7 @@
 
 # [VAR] [<var name>] [<value>] → <var name> = <value>
 def VAR_to_varname_equal(code: str):
+    code = code.lstrip()
     keyword, rest = code.split(" ", 1)
     if keyword!="[VAR]":
         raise SyntaxError(f"Expected `VAR` got `{keyword}`.")
