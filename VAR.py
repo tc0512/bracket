@@ -21,3 +21,24 @@ def VAR_to_varname_equal(code: str):
     if not value:
         raise SyntaxError("Value cannot be empty.")
     return f"{var_name} = {value}"
+
+def transpile_line(line: str) -> str:
+    """转译一行 bracket 代码，自动处理缩进"""
+    indent = len(line) - len(line.lstrip())
+    stripped = line.lstrip()
+
+    if not stripped:
+        return ""
+
+    if stripped.startswith("[VAR]"):
+        return " " * indent + VAR_to_varname_equal(stripped)
+    else:
+        return " " * indent + f"# UNKNOWN: {stripped}"
+
+def transpile(code: str) -> str:
+    """转译多行 bracket 代码"""
+    lines = code.splitlines()
+    result = []
+    for line in lines:
+        result.append(transpile_line(line))
+    return "\n".join(result)

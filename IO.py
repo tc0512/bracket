@@ -48,3 +48,28 @@ while True:
 '''
     else:
         return f'{var_name} = input("{tip_word}: ")'
+
+def transpile_line(line: str): #Transpile one line of bracket code and handle the tabs.
+    indent = len(line) - len(line.lstrip())
+    stripped = line.lstrip()
+
+    if stripped.startswith("[INFO]"):
+        return " " * indent + INFO_to_print(stripped)
+    elif stripped.startswith("[INPUT]"):
+        return " " * indent + INPUT_to_input(stripped)
+    elif stripped.startswith("[VAR]"):
+        return " " * indent + VAR_to_varname_equal(stripped)
+    else:
+        return " " * indent + f"# UNKNOWN: {stripped}"
+
+
+def transpile(code: str) -> str: #Transpile multiple lines of bracket code.
+    """转译多行 bracket 代码"""
+    lines = code.splitlines()
+    result = []
+    for line in lines:
+        if line.strip() == "":
+            result.append("")
+        else:
+            result.append(transpile_line(line))
+    return "\n".join(result)
