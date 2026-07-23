@@ -7,7 +7,7 @@ def USE_to_import(code: str):
     keyword, lib = code.split(" ", 1)
     if keyword!="[USE]":
         raise SyntaxError(f"Expect `[USE]` got {keyword}")
-    key = cond.removeprefix("[").removesuffix("]")
+    key = lib.removeprefix("[").removesuffix("]")
     lib_dict = {
         "GUI": "tkinter as GUI"
     }
