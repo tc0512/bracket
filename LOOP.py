@@ -13,11 +13,7 @@ def FOR_to_for(code: str) -> str:
     var = var_part.removeprefix("[").removesuffix("]")
     range_args = range_part.removeprefix("[").removesuffix("]")
     parts = [p.strip() for p in range_args.split(",")]
-    if len(parts) == 2:
-        start, end = parts
-        step = "1"
-    elif len(parts) == 3:
-        start, end, step = parts
-    else:
-        raise SyntaxError("[FOR] needs 2 or 3 range arguments")
+    elif len(parts)!=3:
+        raise SyntaxError("[FOR] needs 3 range arguments")
+    start, end, step = parts
     return f"for {var} in range({start}, {end}, {step}):"
