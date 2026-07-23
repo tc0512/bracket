@@ -1,0 +1,92 @@
+#!/usr/bin/python3
+# bracket/bkted
+# the editor of bracket-lang
+
+import tkinter as tk
+from tkinter import filedialog, scrolledtext, messagebox
+from bracket.transpile import transpile
+import sys
+from io import StringIO
+
+class BracketEditor:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("bkted - editor of btaracket")
+        self.root.geometry("800x600")
+
+        # Menu
+        menubar = tk.Menu(self.root)
+        file_menu = tk.Menu(menubar, tearoff=0)
+        file_menu.add_command(label="Open", command=self.open_file)
+        file_menu.add_command(label="Save", command=self.save_file)
+        file_menu.add_command(label="Transpile", command=self.show_transpile)
+        file_menu.add_command(label="Run", command=self.run_code)
+        menubar.add_cascade(label="File", menu=file_menu)
+        self.root.config(menu=menubar)
+
+        # Edit area
+        self.text = scrolledtext.ScrolledText(self.root, font=("Courier", 12))
+        self.text.pack(fill=tk.BOTH, expand=True)
+
+    def open_file(self):
+        path = filedialog.askopenfilename(filetypes=[("bracket file", "*.bracket")])
+        if path:
+            with open(path, "r", encoding="utf-8") as f:
+                self.text.delete("1.0", tk.END)
+                self.text.insert("1.0", f.read())
+
+    def save_file(self):
+        path = filedialog.asksaveasfilename(defaultextension=".bracket")
+        if path:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(self.text.get("1.0", tk.END))
+
+    def show_transpile(self):
+        """Transpile only and display the result"""
+        code = self.text.get("1.0", tk.END)
+        try:
+            py_code = transpile(code)
+            self._show_output("Transpile result", py_code)
+        except Exception as e:
+            import traceback
+            self._show_output("Transpile error", traceback.format_exc())
+
+    def run_code(self):
+        """Transpile and run"""
+        code = self.text.get("1.0", tk.END)
+        try:
+            py_code = transpile(code)
+
+            # Catch the output
+            old_stdout = sys.stdout
+            sys.stdout = StringIO()
+
+            # Run the transpiled code
+            exec(py_code, {})
+
+            output = sys.stdout.getvalue()
+            sys.stdout = old_stdout
+
+            # Display the running result
+            self._show_output("Running result", output or "[No output]")
+
+        except Exception as e:
+            import traceback
+            sys.stdout = old_stdout
+            self._show_output("Runtime error", traceback.format_exc())
+
+    def _show_output(self, title: str, content: str):
+        """Create a window and display the content"""
+        win = tk.Toplevel(self.root)
+        win.title(title)
+        win.geometry("600x400")
+        text = scrolledtext.ScrolledText(win, font=("Courier", 12))
+        text.pack(fill=tk.BOTH, expand=True)
+        text.insert("1.0", content)
+
+    def run(self):
+        self.root.mainloop()
+
+if __name__ == "__main__":
+    editor = BracketEditor()
+    editor.run()
