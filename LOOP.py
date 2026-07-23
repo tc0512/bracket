@@ -32,3 +32,17 @@ def LOOP_to_while_True(code: str):
     if code!="[LOOP]":
         raise SyntaxError(f"Expect `[LOOP]` got {code}")
     return "while True:"
+
+# [CONTINUE] → continue
+def CONTINUE_to_continue(code: str):
+    code = code.lstrip()
+    if code!="[CONTINUE]":
+        raise SyntaxError(f"Expect `[CONTINUE]` got {code}")
+    return "continue"
+
+# [BREAK] → break
+def LOOP_to_while_True(code: str):
+    code = code.lstrip()
+    if code!="[BREAK]":
+        raise SyntaxError(f"Expect `[BREAK]` got {code}")
+    return "break"
