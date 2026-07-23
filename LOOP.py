@@ -3,7 +3,6 @@
 # manage the loop sentences
 
 # [FOR] [<range var>] [<start>, <end>, <step length>] → for <range var> in range(<start>, <end>, <step length>)
-# BRANCH.py 或 LOOP.py
 def FOR_to_for(code: str) -> str:
     code = code.lstrip()
     keyword, rest = code.split(" ", 1)
@@ -17,3 +16,19 @@ def FOR_to_for(code: str) -> str:
         raise SyntaxError("[FOR] needs 3 range arguments")
     start, end, step = parts
     return f"for {var} in range({start}, {end}, {step}):"
+
+# [WHILE] [<cond>] → while <cond>:
+def WHILE_to_while(code: str):
+    code = code.lstrip()
+    keyword, cond = code.split(" ", 1)
+    if keyword!="[WHILE]":
+        raise SyntaxError(f"Expect `[WHILE]` got {keyword}")
+    text = cond.removeprefix("[").removesuffix("]")
+    return f"while {text}:"
+
+# [LOOP] → while True:
+def LOOP_to_while_True(code: str):
+    code = code.lstrip()
+    if code!="[LOOP]":
+        raise SyntaxError(f"Expect `[LOOP]` got {code}")
+    return "while True:"

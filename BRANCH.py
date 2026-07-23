@@ -25,7 +25,7 @@ def ELSE_to_else(code: str):
     code = code.lstrip()
     if code!="[ELSE]":
         raise SyntaxError(f"Expect `[ELSE]` got {code}")
-    return "else":
+    return "else:"
 
 def transpile_line(line: str):
     indent = len(line) - len(line.lstrip())
