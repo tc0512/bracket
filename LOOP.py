@@ -41,8 +41,36 @@ def CONTINUE_to_continue(code: str):
     return "continue"
 
 # [BREAK] → break
-def LOOP_to_while_True(code: str):
+def BREAK_to_break(code: str):
     code = code.lstrip()
     if code!="[BREAK]":
         raise SyntaxError(f"Expect `[BREAK]` got {code}")
     return "break"
+
+def transpile_line(line: str) -> str:
+    indent = len(line) - len(line.lstrip())
+    stripped = line.lstrip()
+    if not stripped:
+        return ""
+    if stripped.startswith("[FOR]"):
+        return " " * indent + FOR_to_for(stripped)
+    elif stripped.startswith("[WHILE]"):
+        return " " * indent + WHILE_to_while(stripped)
+    elif stripped == "[LOOP]":
+        return " " * indent + LOOP_to_while_True(stripped)
+    elif stripped == "[BREAK]":
+        return " " * indent + BREAK_to_break(stripped)
+    elif stripped == "[CONTINUE]":
+        return " " * indent + CONTINUE_to_continue(stripped)
+    else:
+        return " " * indent + f"# UNKNOWN: {stripped}"
+
+def transpile(code: str):
+    lines = code.splitlines()
+    result = []
+    for line in lines:
+        if line.strip():
+            result.append(transpile_line(line))
+        else:
+            result.append("")
+    return "\n".join(result)
