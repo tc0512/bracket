@@ -55,7 +55,7 @@ def transpile_line(line: str): #Transpile one line of bracket code and handle th
 
     if stripped.startswith("[INFO]"):
         return " " * indent + INFO_to_print(stripped)
-    elif stripped.startswith("[INPUT]"):
+    elif "[INPUT]" in stripped:
         return " " * indent + INPUT_to_input(stripped)
     elif stripped.startswith("[VAR]"):
         return " " * indent + VAR_to_varname_equal(stripped)
