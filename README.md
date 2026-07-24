@@ -54,8 +54,9 @@ pip install bracket
     [VAR] [i] [i+1]
 [LOOP]
     [INFO] [i]
-    [IF] [i==100000]
+    [IF] [i==100]
         [BREAK]
+    [VAR] [i] [i+1]
 
 # GUI
 [USE] [TKGUI]
@@ -66,8 +67,24 @@ root.geometry("300x200")
 label.pack()
 root.mainloop()
 ```
-输出
+输出: 
 ```text
 这是一段文本
 Loading... complete
+2 3.0 abc [1, 2, 3, 4, 5] (1, 2, 3) {1: 1, 2: 4, 3: 9}
+单行文本: 1
+多行文本: 2
+3
+您这两次分别输入了
+1
+2
+3
+正数
+5050
+1
+2
+3
+...
+100
 ```
+窗口显示: 
