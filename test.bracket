@@ -1,18 +1,3 @@
-# bracket
-python制作的转译型简单编程语言
-
-## 1 安装
-```bash
-pip install bracket
-```
-
-## 2 Hello world
-```bracket
-[INFO] ["Hello world!"]
-```
-
-## 3 基本语法
-```bracket
 # 打印
 [INFO] ["这是一段文本"]
 [INFO] ["Loading...", end=" "]
@@ -65,4 +50,3 @@ root.geometry("300x200")
 [VAR] [label] [TKGUI.Label(root, text="Hello, World!")]
 label.pack()
 root.mainloop()
-```
