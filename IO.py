@@ -44,7 +44,7 @@ while True:
         print("\\\\nCanceled input.")
         break
     lines.append(line)
-{var_name} = "\\\\n".join(lines)
+{var_name} = "\\n".join(lines)
 '''
     else:
         return f'{var_name} = input("{tip_word}: ")'
