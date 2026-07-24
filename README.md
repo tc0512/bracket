@@ -32,7 +32,7 @@ pip install bracket
 [VAR] [long] [INPUT] [多行文本] [True]
 [INFO] ["您这两次分别输入了: "]
 [INFO] [short]
-[INFO] [ling]
+[INFO] [long]
 
 # 分支语句
 [VAR] [a] [6]
@@ -65,4 +65,9 @@ root.geometry("300x200")
 [VAR] [label] [TKGUI.Label(root, text="Hello, World!")]
 label.pack()
 root.mainloop()
+```
+输出
+```text
+这是一段文本
+Loading... complete
 ```
