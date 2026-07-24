@@ -17,10 +17,10 @@ from .IMPORTLIB import USE_to_import
 
 def transpile_line(line: str) -> str:
     indent = len(line) - len(line.lstrip())
-    stripped = line.lstrip()
+    stripped = line.lstrip().split("#")[0].rstrip()
     if not stripped:
         return ""
-    for i in ["print", "import", "def", "class"]:
+    for i in ["print", "import", "def", "class", "exec", "__import__"]:
         if i in stripped:
             raise SyntaxError("Sorry, we don't support python syntax.")
     if stripped.startswith("[USE]"):
@@ -41,7 +41,7 @@ def transpile_line(line: str) -> str:
         return " " * indent + ELSEIF_to_elif(stripped)
     elif stripped == "[ELSE]":
         return " " * indent + ELSE_to_else(stripped)
-    elif stripped.startswith("[INPUT]"):
+    elif "[INPUT]" in stripped:
         return " " * indent + INPUT_to_input(stripped)
     elif stripped.startswith("[VAR]"):
         return " " * indent + VAR_to_varname_equal(stripped)
@@ -58,3 +58,35 @@ def transpile(code: str) -> str:
         else:
             result.append("")
     return "\n".join(result)
+
+# Tests
+code = """
+# 测试代码
+
+# 1 打印
+[INFO] ["Hello world!"]
+
+# 2 变量
+[VAR] [a] [3] #int
+[VAR] [b] [2.0] #float
+[VAR] [string] ["abc"] #string
+[VAR] [lst] [[1, 2, 3, 4, 5]] #list
+[VAR] [t] [(1, 2, 3)] #tuple
+[VAR] [dict] [{1: 1, 2: 4, 3: 9}] #dictonary
+[VAR] [bl] [True] #bool
+
+# 3 输入
+[VAR] [stdin] [INPUT] ['单行输入'] [False]
+[VAR] [long] [INPUT] ['多行输入'] [True]
+
+# 4 分支语句
+[IF] [a>b]
+    [INFO] ["大于"]
+
+# 5 循环
+[VAR] [total] [0]
+[FOR] [i] [1, 101, 1]
+    total+=i
+[INFO] [f'1-100的和{total}']
+"""
+print(transpile(code))
