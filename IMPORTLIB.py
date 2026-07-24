@@ -9,6 +9,6 @@ def USE_to_import(code: str):
         raise SyntaxError(f"Expect `[USE]` got {keyword}")
     key = lib.removeprefix("[").removesuffix("]")
     lib_dict = {
-        "GUI": "tkinter as GUI"
+        "TKGUI": "tkinter as TKGUI"
     }
     return f"import {lib_dict[key]}"
