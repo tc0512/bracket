@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-# bracket/bkted
+# bracket/bkted.py
 # the editor of bracket-lang
 
 import tkinter as tk
 from tkinter import filedialog, scrolledtext, messagebox
-from bracket.transpile import transpile
+from .transpile import transpile
 import sys
 from io import StringIO
 
