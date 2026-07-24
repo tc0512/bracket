@@ -41,7 +41,7 @@ while True:
     except EOFError:
         break
     except KeyboardInterrupt:
-        print("\\\\nCanceled input.")
+        print("\\nCanceled input.")
         break
     lines.append(line)
 {var_name} = "\\n".join(lines)
