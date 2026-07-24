@@ -58,35 +58,3 @@ def transpile(code: str) -> str:
         else:
             result.append("")
     return "\n".join(result)
-
-# Tests
-code = """
-# 测试代码
-
-# 1 打印
-[INFO] ["Hello world!"]
-
-# 2 变量
-[VAR] [a] [3] #int
-[VAR] [b] [2.0] #float
-[VAR] [string] ["abc"] #string
-[VAR] [lst] [[1, 2, 3, 4, 5]] #list
-[VAR] [t] [(1, 2, 3)] #tuple
-[VAR] [dict] [{1: 1, 2: 4, 3: 9}] #dictonary
-[VAR] [bl] [True] #bool
-
-# 3 输入
-[VAR] [stdin] [INPUT] ['单行输入'] [False]
-[VAR] [long] [INPUT] ['多行输入'] [True]
-
-# 4 分支语句
-[IF] [a>b]
-    [INFO] ["大于"]
-
-# 5 循环
-[VAR] [total] [0]
-[FOR] [i] [1, 101, 1]
-    total+=i
-[INFO] [f'1-100的和{total}']
-"""
-print(transpile(code))

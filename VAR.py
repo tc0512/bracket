@@ -16,7 +16,10 @@ def VAR_to_varname_equal(code: str):
     value = parts[1].strip()
     if not var_name:
         raise SyntaxError("Var name cannot be empty.")
+    dangerous_list = ["INFO", "VAR", "INPUT", "IF", "ELSEIF", "ELSE", "FOR", "WHILE", "LOOP", "print", "input", "int", "float", "str", "def", "class", "exec", "import", "__import__"]
     if not var_name.isidentifier():
+        raise SyntaxError(f"Invalid var name: {var_name}.")
+    if var_name in dangerous_list:
         raise SyntaxError(f"Invalid var name: {var_name}.")
     if not value:
         raise SyntaxError("Value cannot be empty.")
@@ -26,10 +29,8 @@ def transpile_line(line: str) -> str:
     """转译一行 bracket 代码，自动处理缩进"""
     indent = len(line) - len(line.lstrip())
     stripped = line.lstrip()
-
     if not stripped:
         return ""
-
     if stripped.startswith("[VAR]"):
         return " " * indent + VAR_to_varname_equal(stripped)
     else:
