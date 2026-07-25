@@ -2,6 +2,8 @@
 # bracket/transpile.py
 # Unification transpile interface
 
+import keyword
+
 from .IO import INFO_to_print, INPUT_to_input
 from .VAR import VAR_to_varname_equal
 from .BRANCH import IF_to_if, ELSEIF_to_elif, ELSE_to_else
@@ -20,7 +22,7 @@ def transpile_line(line: str) -> str:
     stripped = line.lstrip().split("#")[0].rstrip()
     if not stripped:
         return ""
-    for i in ["print", "import", "def", "class", "exec", "__import__"]:
+    for i in keyword.kwlist:
         if i in stripped:
             raise SyntaxError("Sorry, we don't support python syntax.")
     if stripped.startswith("[USE]"):

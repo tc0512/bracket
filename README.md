@@ -88,3 +88,11 @@ Loading... complete
 100
 ```
 ![窗口显示: ](./TKGUI_helloHello.jpg)
+
+## 4 注意事项
+1. `INFO`的参数与python的`print`基本相同
+2. `[VAR] [lst] [[1, 2, 3, 4, 5]]`是真正的列表, `[VAR] [t] [1, 2, 3, 4, 5]`是元组
+3. `FOR`必须要写三个参数
+4. `[LOOP]`是无限循环, 与`[WHILE] [True]`等效
+5. 变量名不能与bracket关键字和python关键字重名
+6. bracket语言不兼容python的列表推导式, 三元表达式等
