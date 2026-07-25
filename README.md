@@ -3,7 +3,7 @@ python制作的转译型简单编程语言
 
 ## 1 安装
 ```bash
-pip install bracket
+pip install bracket-lang
 ```
 
 ## 2 Hello world
