@@ -28,7 +28,7 @@ def VAR_to_varname_equal(code: str):
     return f"{var_name} = {value}"
 
 def transpile_line(line: str) -> str:
-    """转译一行 bracket 代码，自动处理缩进"""
+    """transpile one line of bracket code and operate indents"""
     indent = len(line) - len(line.lstrip())
     stripped = line.lstrip()
     if not stripped:
@@ -39,7 +39,7 @@ def transpile_line(line: str) -> str:
         return " " * indent + f"# UNKNOWN: {stripped}"
 
 def transpile(code: str) -> str:
-    """转译多行 bracket 代码"""
+    """transpile multiple lines of bracket codes"""
     lines = code.splitlines()
     result = []
     for line in lines:
