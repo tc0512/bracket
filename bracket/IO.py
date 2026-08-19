@@ -2,6 +2,8 @@
 # bracket/IO.py
 # manage I/O operation
 
+from keyword import kwlist
+
 # [INFO] [<text>] → print(<text>)
 def INFO_to_print(code: str):
     code = code.lstrip()
@@ -11,14 +13,14 @@ def INFO_to_print(code: str):
     text = text.removeprefix("[").removesuffix("]")
     return f"print({text})"
 
-# [VAR] [<var name>] [INPUT] [<tip word> (don't need quotation marks)] [<multilines> (bool)] → var = input(<tip word>)
+# [VAR] [<var name>] [INPUT] [<tip word>] [<multilines> (bool)] → var = input(<tip word>)
 def INPUT_to_input(code: str) -> str:
     code = code.lstrip()
     rest = code.split(" ", 1)[1]
     inner = rest.removeprefix("[").removesuffix("]")
     parts = inner.split("] [")
     if len(parts) != 4:
-        raise SyntaxError("Usage: [VAR] [<var name>] [INPUT] [<tip word> (don't need quotation marks)] [<multilines> (bool)]")
+        raise SyntaxError("Usage: [VAR] [<var name>] [INPUT] [<tip word>] [<multilines> (bool)]")
     var_name = parts[0].strip()
     keyword = parts[1]
     tip_word = parts[2].strip()
@@ -27,13 +29,14 @@ def INPUT_to_input(code: str) -> str:
         raise SyntaxError("Var name cannot be empty.")
     if not var_name.isidentifier():
         raise SyntaxError(f"Invalid var name: {var_name}.")
+    dangerous_list = kwlist+["INFO", "VAR", "INPUT", "IF", "ELSEIF", "ELSE", "FOR", "WHILE", "LOOP", "FUNC", "CLASS", "ERROR", "WARN", "USE"]
+    if var_name in dangerous_list:
+        raise SyntaxError(f"Invalid var name: {var_name}.")
     if keyword != "INPUT":
         raise SyntaxError(f"Expected `INPUT`, got `{keyword}`.")
-    if not tip_word:
-        raise SyntaxError("Tip word cannot be empty")
     if multilines:
         return f'''\
-print("{tip_word} (use EOF to finish)")
+print({tip_word})
 lines = []
 while True:
     try:
@@ -47,9 +50,10 @@ while True:
 {var_name} = "\\n".join(lines)
 '''
     else:
-        return f'{var_name} = input("{tip_word}: ")'
+        return f'{var_name} = input({tip_word})'
 
-def transpile_line(line: str): #Transpile one line of bracket code and handle the tabs.
+def transpile_line(line: str):
+    """transpile one line of bracket code and operate indents"""
     indent = len(line) - len(line.lstrip())
     stripped = line.lstrip()
 
@@ -63,8 +67,8 @@ def transpile_line(line: str): #Transpile one line of bracket code and handle th
         return " " * indent + f"# UNKNOWN: {stripped}"
 
 
-def transpile(code: str) -> str: #Transpile multiple lines of bracket code.
-    """转译多行 bracket 代码"""
+def transpile(code: str) -> str:
+    """Transpile multiple lines of bracket code"""
     lines = code.splitlines()
     result = []
     for line in lines:

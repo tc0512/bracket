@@ -18,7 +18,7 @@ def VAR_to_varname_equal(code: str):
     value = parts[1].strip()
     if not var_name:
         raise SyntaxError("Var name cannot be empty.")
-    dangerous_list = dangerous_list = kwlist+["INFO", "VAR", "INPUT", "IF", "ELSEIF", "ELSE", "FOR", "WHILE", "LOOP", "FUNC", "CLASS", "ERROR", "WARN", "USE"]
+    dangerous_list = kwlist+["INFO", "VAR", "INPUT", "IF", "ELSEIF", "ELSE", "FOR", "WHILE", "LOOP", "FUNC", "CLASS", "ERROR", "WARN", "USE"]
     if not var_name.isidentifier():
         raise SyntaxError(f"Invalid var name: {var_name}.")
     if var_name in dangerous_list:
