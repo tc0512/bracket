@@ -23,8 +23,6 @@ def FUNC_to_def(code: str):
         raise SyntaxError(f"Invalid function name: {function_name}.")
     if function_name in dangerous_list:
         raise SyntaxError(f"Invalid function name: {function_name}.")
-    if not args:
-        raise SyntaxError("Value cannot be empty.")
     return f"def {function_name}({args}):"
 
 # [RETURN] [<val>] → return <val>
@@ -34,6 +32,8 @@ def RETURN_to_return(code: str):
     if keyword!="[RETURN]":
         raise SyntaxError(f"Expected `RETURN` got `{keyword}`.")
     val = val.removeprefix("[").removesuffix("]")
+    if not val:
+        return "return"
     return f"return {val}"
 
 def transpile_line(line: str) -> str:
