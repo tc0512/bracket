@@ -11,4 +11,5 @@ setup(
         ],
     },
     python_requires=">=3.8",
+    install_requires=["rich>=13.0.0"]
 )
