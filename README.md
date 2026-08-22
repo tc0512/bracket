@@ -28,8 +28,8 @@ pip install bracket-lang
 [INFO] [integer, floating_point, string, lst, t, dict]
 
 # 输入
-[VAR] [short] [INPUT] [单行文本] [False]
-[VAR] [long] [INPUT] [多行文本] [True]
+[VAR] [short] [INPUT] ["单行文本"] [False]
+[VAR] [long] [INPUT] ["多行文本"] [True]
 [INFO] ["您这两次分别输入了: "]
 [INFO] [short]
 [INFO] [long]
@@ -57,6 +57,32 @@ pip install bracket-lang
     [IF] [i==100]
         [BREAK]
     [VAR] [i] [i+1]
+
+# 函数
+[FUNC] [longest] [x, y]
+    [IF] [len(x)>len(y)]
+        [RETURN] [x]
+    [RETURN] [y]
+[INFO] [longest("hi", "hello")]
+
+# 类
+[CLASS] [Calculator] [object]
+    [FUNC] [add] [a, b]
+        [RETURN] [a+b]
+    [FUNC] [subtract] [a, b]
+        [RETURN] [a-b]
+    [FUNC] [mul] [a, b]
+        [RETURN] [a*b]
+    [FUNC] [division] [a, b]
+        [IF] [b==0]
+            [ERROR] ["Cannot devide by zero."]
+        [RETURN] [a/b]
+    [FUNC] [percent] [a]
+        [RETURN] [a/100]
+[INFO] [Calculator.add(1, 1)]
+
+# 警告
+[WARN] ["警告信息"]
 
 # GUI
 [USE] [TKGUI]
@@ -86,6 +112,9 @@ Loading... complete
 3
 ...
 100
+hello
+2
+警告信息[yellow]
 ```
 ![窗口显示: ](./TKGUI_helloHello.jpg)
 
