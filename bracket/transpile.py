@@ -2,8 +2,6 @@
 # bracket/transpile.py
 # Unification transpile interface
 
-import keyword
-
 from .IO import INFO_to_print, INPUT_to_input
 from .VAR import VAR_to_varname_equal
 from .BRANCH import IF_to_if, ELSEIF_to_elif, ELSE_to_else
@@ -15,16 +13,16 @@ from .LOOP import (
     CONTINUE_to_continue,
 )
 from .IMPORTLIB import USE_to_import
-
+from .CLASS import CLASS_to_class
+from .ERROR import ERROR_to_rich_print_and_exit_1
+from .WARN import WARN_to_rich_print
+from .FUN import FUNC_to_def, RETURN_to_return
 
 def transpile_line(line: str) -> str:
     indent = len(line) - len(line.lstrip())
     stripped = line.lstrip().split("#")[0].rstrip()
     if not stripped:
         return ""
-    for i in keyword.kwlist:
-        if i in stripped:
-            raise SyntaxError("Sorry, we don't support python syntax.")
     if stripped.startswith("[USE]"):
         return " " * indent + USE_to_import(stripped)
     elif stripped.startswith("[FOR]"):
@@ -49,6 +47,16 @@ def transpile_line(line: str) -> str:
         return " " * indent + VAR_to_varname_equal(stripped)
     elif stripped.startswith("[INFO]"):
         return " " * indent + INFO_to_print(stripped)
+    elif stripped.startswith("[CLASS]"):
+        return " " * indent + CLASS_to_class(stripped)
+    elif stripped.startswith("[ERROR]"):
+        return " " * indent + ERROR_to_rich_print_and_exit_1(stripped)
+    elif stripped.startswith("[WARN]"):
+        return " " * indent + WARN_to_rich_print(stripped)
+    elif stripped.startswith("[FUNC]"):
+        return " " * indent + FUNC_to_def(stripped)
+    elif stripped.startswith("[RETURN]"):
+        return " " * indent + RETURN_to_return(stripped)
     return " " * indent + line
 
 def transpile(code: str) -> str:
