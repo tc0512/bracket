@@ -13,6 +13,8 @@ pip install bracket-lang
 
 ## 3 基本语法
 ```bracket
+# main.bracket
+
 # 打印
 [INFO] ["这是一段文本"]
 [INFO] ["Loading...", end=" "]
@@ -117,6 +119,15 @@ hello
 警告信息[yellow]
 ```
 ![窗口显示: ](./TKGUI_helloHello.jpg)
+打包:
+```bash
+bracket build main.bracket
+cat >> build.bracket << 'EOF'
+[USE] [PACKAGING]
+PACK(["--onefile", "main.py"])
+EOF
+bracket run build.bracket
+```
 
 ## 4 命令行工具参数
 | 参数 | 用法 |

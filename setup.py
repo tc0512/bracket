@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="bracket-lang",
-    version="0.2.0",
+    version="0.3.0",
     packages=find_packages(),
     entry_points={
         "console_scripts": [
@@ -11,5 +11,8 @@ setup(
         ],
     },
     python_requires=">=3.8",
-    install_requires=["rich>=13.0.0"]
+    install_requires=[
+        "rich>=13.0.0",
+        "pyinstaller>=6.0.0"
+    ]
 )
