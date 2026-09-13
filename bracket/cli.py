@@ -4,6 +4,8 @@
 
 import sys
 import argparse
+import subprocess
+
 from .transpile import transpile
 
 def main():
@@ -20,20 +22,28 @@ def main():
     build_parser = subparsers.add_parser("build", help="transpile .bracket file to .py")
     build_parser.add_argument("file", help="the .bracket file you want to transpile")
     build_parser.add_argument("-o", "--output", help="output file name(default same name .py)")
+    # pack command
+    pack_parser = subparsers.add_parser("pack", help="pack .bracket file to binary")
+    pack_parser.add_argument("file", help="the .bracket file you want to pack")
+    pack_parser.add_argument("-o", "--output", help="output file name(default same name .bracket)")
     args = parser.parse_args()
-    if args.command == "run":
+    if args.command=="run":
         with open(args.file, "r", encoding="utf-8") as f:
             code = f.read()
         py_code = transpile(code)
         exec(py_code)
-    elif args.command == "build":
+    elif args.command=="build":
         with open(args.file, "r", encoding="utf-8") as f:
             code = f.read()
         py_code = transpile(code)
         output = args.output or args.file.replace(".bracket", ".py")
         with open(output, "w", encoding="utf-8") as f:
             f.write(py_code)
-        print(f"✓ transpile finished: {output}")
+    elif args.command=="pack":
+        print(f"Building {args.file}")
+        subprocess.run(["bracket", "build", str(args.file)], check=True)
+        print("Packing with pyinstaller")
+        subprocess.run(["pyinstaller", "--onefile", str(args.file).replace(".bracket", ".py")], check=True)
 
 if __name__ == "__main__":
     main()
