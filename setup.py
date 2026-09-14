@@ -8,7 +8,7 @@ long_description = readme_path.read_text(encoding="utf-8") if readme_path.exists
 
 setup(
     name="bracket-lang",
-    version="0.3.0",
+    version="0.4.0",
     packages=find_packages(),
     entry_points={
         "console_scripts": [
