@@ -2,12 +2,18 @@
 # bracket/BRANCH.py
 # manage the branch sentences
 
+import sys
+
+import rich
+
 # [IF] [<cond>] → if <cond>:
 def IF_to_if(code: str):
     code = code.lstrip()
     keyword, cond = code.split(" ", 1)
     if keyword!="[IF]":
-        raise SyntaxError(f"Expect `[IF]` got {keyword}")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"error:Expect `[IF]` got {keyword}")
+        sys.exit(1)
     text = cond.removeprefix("[").removesuffix("]")
     return f"if {text}:"
 
@@ -16,7 +22,9 @@ def ELSEIF_to_elif(code: str):
     code = code.lstrip()
     keyword, cond = code.split(" ", 1)
     if keyword!="[ELSEIF]":
-        raise SyntaxError(f"Expect `[ELSEIF]` got {keyword}")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"error:Expect `[ELSEIF]` got {keyword}")
+        sys.exit(1)
     text = cond.removeprefix("[").removesuffix("]")
     return f"elif {text}:"
 
@@ -24,7 +32,9 @@ def ELSEIF_to_elif(code: str):
 def ELSE_to_else(code: str):
     code = code.lstrip()
     if code!="[ELSE]":
-        raise SyntaxError(f"Expect `[ELSE]` got {code}")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"error:Expect `[ELSE]` got {keyword}")
+        sys.exit(1)
     return "else:"
 
 def transpile_line(line: str):

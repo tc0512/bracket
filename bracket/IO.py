@@ -3,37 +3,52 @@
 # manage I/O operation
 
 from keyword import kwlist
+import sys
 
+import rich
 # [INFO] [<text>] → print(<text>)
 def INFO_to_print(code: str):
     code = code.lstrip()
     keyword, text = code.split(" ", 1)
     if keyword!="[INFO]":
-        raise SyntaxError(f"Expected `INFO` got `{keyword}`.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Expected `INFO` got `{keyword}`.[/red]")
+        sys.exit(1)
     text = text.removeprefix("[").removesuffix("]")
     return f"print({text})"
 
 # [VAR] [<var name>] [INPUT] [<tip word>] [<multilines> (bool)] → var = input(<tip word>)
-def INPUT_to_input(code: str) -> str:
+def INPUT_to_input(code: str):
     code = code.lstrip()
     rest = code.split(" ", 1)[1]
     inner = rest.removeprefix("[").removesuffix("]")
     parts = inner.split("] [")
     if len(parts) != 4:
-        raise SyntaxError("Usage: [VAR] [<var name>] [INPUT] [<tip word>] [<multilines> (bool)]")
+        rich.print(f"[red]{code}[/red]")
+        rich.print("[red]error:Something wrong in your code.[/red]")
+        rich.print("[red]The true usage of `[INPUT]` sentences is `[VAR] [<var name>] [INPUT] [<tip word>] [<multilines> (bool)]`[/red]")
+        sys.exit(1)
     var_name = parts[0].strip()
     keyword = parts[1]
     tip_word = parts[2].strip()
     multilines = parts[3].lower() in ("true", "1", "yes", "on")
     if not var_name:
-        raise SyntaxError("Var name cannot be empty.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print("[red]error:Var name cannot be empty.[/red]")
+        sys.exit(1)
     if not var_name.isidentifier():
-        raise SyntaxError(f"Invalid var name: {var_name}.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Invalid var name: {var_name}.[/red]")
+        sys.exit(1)
     dangerous_list = kwlist+["INFO", "VAR", "INPUT", "IF", "ELSEIF", "ELSE", "FOR", "WHILE", "LOOP", "FUNC", "CLASS", "ERROR", "WARN", "USE"]
     if var_name in dangerous_list:
-        raise SyntaxError(f"Invalid var name: {var_name}.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Invalid var name: {var_name}.[/red]")
+        sys.exit(1)
     if keyword != "INPUT":
-        raise SyntaxError(f"Expected `INPUT`, got `{keyword}`.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Expected `INPUT` got `{keyword}`.[/red]")
+        sys.exit(1)
     if multilines:
         return f'''\
 print({tip_word})

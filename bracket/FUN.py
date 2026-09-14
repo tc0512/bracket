@@ -3,26 +3,40 @@
 # mamage function defining
 
 from keyword import kwlist
+import sys
+
+import rich
 
 # [FUNC] [<function name>] [<args>] → def <function name>(<args>):
 def FUNC_to_def(code: str):
     code = code.lstrip()
     keyword, rest = code.split(" ", 1)
     if keyword!="[FUNC]":
-        raise SyntaxError(f"Expected `FUNC` got `{keyword}`.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Expected `FUNC` got `{keyword}`.[/red]")
+        sys.exit(1)
     inner = rest.removeprefix("[").removesuffix("]")
     parts = inner.split("] [")
     if len(parts) != 2:
-        raise SyntaxError("Usage: [FUNC] [<function name>] [<args>]")
+        rich.print(f"[red]{code}[red]")
+        rich.print("[red]error:Something wrong in your code[/red]")
+        rich.print("[red]The usage of `[FUNC]` sentences is `[FUNC] [<function name>] [<args>]`[/red]")
+        sys.exit(1)
     function_name = parts[0].strip()
     args = parts[1].strip()
     if not function_name:
-        raise SyntaxError("Function name cannot be empty.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print("[/red]error:Function name cannot be empty.[/red]")
+        sys.exit(1)
     dangerous_list = kwlist+["INFO", "VAR", "INPUT", "IF", "ELSEIF", "ELSE", "FOR", "WHILE", "LOOP", "FUNC", "CLASS", "ERROR", "WARN", "USE"]
     if not function_name.isidentifier():
-        raise SyntaxError(f"Invalid function name: {function_name}.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Invalid function name: {function_name}.[/red]")
+        sys.exit(1)
     if function_name in dangerous_list:
-        raise SyntaxError(f"Invalid function name: {function_name}.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Invalid function name: {function_name}.[/red]")
+        sys.exit(1)
     return f"def {function_name}({args}):"
 
 # [RETURN] [<val>] → return <val>
@@ -30,7 +44,9 @@ def RETURN_to_return(code: str):
     code = code.lstrip()
     keyword, val = code.split(" ", 1)
     if keyword!="[RETURN]":
-        raise SyntaxError(f"Expected `RETURN` got `{keyword}`.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Expected `FUNC` got `{keyword}`.[/red]")
+        sys.exit(1)
     val = val.removeprefix("[").removesuffix("]")
     if not val:
         return "return"

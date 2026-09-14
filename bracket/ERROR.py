@@ -2,12 +2,18 @@
 # bracket/ERROR.py
 # manage errors generating
 
+import sys
+
+import rich
+
 # [ERROR] [<info>] → __import__("rich").print([red]<info>[/red]);__import__("sys").exit(1)
 def ERROR_to_rich_print_and_exit_1(code: str):
     code = code.lstrip()
     keyword, info = code.split(" ", 1)
     if keyword!="[ERROR]":
-        raise SyntaxError(f"Expected `ERROR` got `{keyword}`.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]Expected `ERROR` got `{keyword}`.[/red]")
+        sys.exit(1)
     info = info.removeprefix("[").removesuffix("]")
     return f"__import__('rich').print('[red]{info[1:-1]}[/red]');__import__('sys').exit(1)"
 

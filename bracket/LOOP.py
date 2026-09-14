@@ -2,18 +2,26 @@
 # bracket/LOOP.py
 # manage the loop sentences
 
+import sys
+
+import rich
+
 # [FOR] [<range var>] [<start>, <end>, <step length>] → for <range var> in range(<start>, <end>, <step length>)
 def FOR_to_for(code: str) -> str:
     code = code.lstrip()
     keyword, rest = code.split(" ", 1)
     if keyword != "[FOR]":
-        raise SyntaxError(f"Expected `[FOR]` got `{keyword}`")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Expected `[FOR]` got `{keyword}`[/red]")
+        sys.exit(1)
     var_part, range_part = rest.split(" ", 1)
     var = var_part.removeprefix("[").removesuffix("]")
     range_args = range_part.removeprefix("[").removesuffix("]")
     parts = [p.strip() for p in range_args.split(",")]
     if len(parts)!=3:
-        raise SyntaxError("[FOR] needs 3 range arguments")
+        rich.print(f"[red]{code}[/red]")
+        rich.print("[red]error:[FOR] needs 3 range arguments[/red]")
+        sys.exit(1)
     start, end, step = parts
     return f"for {var} in range({start}, {end}, {step}):"
 
@@ -22,7 +30,9 @@ def WHILE_to_while(code: str):
     code = code.lstrip()
     keyword, cond = code.split(" ", 1)
     if keyword!="[WHILE]":
-        raise SyntaxError(f"Expect `[WHILE]` got {keyword}")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Expected `[WHILE]` got `{keyword}`[/red]")
+        sys.exit(1)
     text = cond.removeprefix("[").removesuffix("]")
     return f"while {text}:"
 
@@ -30,21 +40,27 @@ def WHILE_to_while(code: str):
 def LOOP_to_while_True(code: str):
     code = code.lstrip()
     if code!="[LOOP]":
-        raise SyntaxError(f"Expect `[LOOP]` got {code}")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Expected `[LOOP]` got `{keyword}`[/red]")
+        sys.exit(1)
     return "while True:"
 
 # [CONTINUE] → continue
 def CONTINUE_to_continue(code: str):
     code = code.lstrip()
     if code!="[CONTINUE]":
-        raise SyntaxError(f"Expect `[CONTINUE]` got {code}")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Expected `[CONTINUE]` got `{keyword}`[/red]")
+        sys.exit(1)
     return "continue"
 
 # [BREAK] → break
 def BREAK_to_break(code: str):
     code = code.lstrip()
     if code!="[BREAK]":
-        raise SyntaxError(f"Expect `[BREAK]` got {code}")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]error:Expected `[BREAK]` got `{keyword}`[/red]")
+        sys.exit(1)
     return "break"
 
 def transpile_line(line: str) -> str:

@@ -2,12 +2,18 @@
 # bracket/WARN.py
 # manage warnings generating
 
+import sys
+
+import rich
+
 # [WARN] [<info>] → __import__("rich").print("[yellow]<info>[/yellow]")
 def WARN_to_rich_print(code: str):
     code = code.lstrip()
     keyword, info = code.split(" ", 1)
     if keyword!="[WARN]":
-        raise SyntaxError(f"Expected `WARN` got `{keyword}`.")
+        rich.print(f"[red]{code}[/red]")
+        rich.print(f"[red]Expected `WARN` got `{keyword}`.[/red]")
+        sys.exit(1)
     info = info.removeprefix("[").removesuffix("]")
     return f"__import__('rich').print('[yellow]{info[1:-1]}[/yellow]')"
 
