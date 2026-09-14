@@ -87,11 +87,11 @@ pip install bracket-lang
 [WARN] ["警告信息"]
 
 # GUI
-[USE] [TKGUI]
-[VAR] [root] [TKGUI.Tk()]
+[USE] [GUI]
+[VAR] [root] [Base()]
 root.title("Hello bracket")
 root.geometry("300x200")
-[VAR] [label] [TKGUI.Label(root, text="Hello, World!")]
+[VAR] [label] [Tag(root, text="Hello, World!")]
 label.pack()
 root.mainloop()
 ```
@@ -121,12 +121,7 @@ hello
 ![窗口显示: ](./TKGUI_helloHello.jpg)
 打包:
 ```bash
-bracket build main.bracket
-cat >> build.bracket << 'EOF'
-[USE] [PACKAGING]
-PACK(["--onefile", "main.py"])
-EOF
-bracket run build.bracket
+bracket pack main.bracket
 ```
 
 ## 4 命令行工具参数
@@ -135,6 +130,7 @@ bracket run build.bracket
 | `--help` `-h` | 帮助 |
 | `build` | 转译 |
 | `run` | 转译运行 |
+| `pack` | 打包成二进制 |
 
 ## 6 注意事项
 1. `INFO`的参数与python的`print`基本相同
