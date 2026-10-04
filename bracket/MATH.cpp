@@ -1,4 +1,4 @@
-#include<pybind11/pybind11.h> //WARNING: PyBind11 only support C++14+
+#include<pybind11/pybind11.h>
 #include<pybind11/stl.h>
 #include<cmath>
 #include<stdexcept>
@@ -43,8 +43,24 @@ double artanh(double x) {
 double cube_root(double x) {
     return std::cbrt(x);
 }
-double ceiling_function(double x) {
-    return std::ceil(x);
+long long ceiling_function(double x) {
+    return static_cast<long long>(std::ceil(x));
+}
+long long comb(int n, int k) {
+    if (k<0 || k>n) {
+        return 0;
+    }
+    if (k>n-k) {
+        k = n-k;
+    }
+    long long r = 1;
+    for (int i = 0; i < k; ++i) {
+        r = r*(n-i)/(i+1);
+    }
+    return r;
+}
+double copy_sign(double x, double y) {
+    return std::copysign(x, y);
 }
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
@@ -56,6 +72,8 @@ PYBIND11_MODULE(MATH, m) {
     m.def("atan2", &arctan2, py::arg("y"), py::arg("x"), "two-argument inverse tangent");
     m.def("atanh", &artanh, py::arg("x"), "inverse hyperbolic tangent");
     m.def("cbrt",  &cube_root, py::arg("x"), "cube root");
-    m.def("ceil", &ceiling_function, py::arg("x"), "ceiling function")
+    m.def("ceil", &ceiling_function, py::arg("x"), "ceiling function");
+    m.def("comb", &comb, py::arg("n"), py::arg("k"), "combination number");
+    m.def("copysign", &copy_sign, py::arg("x"), py::arg("y"), "copy sign");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
