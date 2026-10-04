@@ -4,6 +4,7 @@
 #include<stdexcept>
 #include<string>
 namespace py = pybind11;
+constexpr double PI = 3.14159265358979323846;
 double arccos(double x) {
     if (-1<=x && x<=1) {
         return std::acos(x);
@@ -62,8 +63,46 @@ long long comb(int n, int k) {
 double copy_sign(double x, double y) {
     return std::copysign(x, y);
 }
+double cosine(double x) {
+    return std::cos(x);
+}
+double hyperbolic_cosine(double x) {
+    return std::cosh(x);
+}
+double Deg(double x) {
+    return x*180/PI;
+}
+double dist(const std::vector<double>& p1, const std::vector<double>& p2) {
+    size_t l1 = p1.size();
+    size_t l2 = p2.size();
+    if (l1!=l2) {
+        throw std::invalid_argument("both points must have the same number of dimensions");
+    }
+    double s = 0.0;
+    for (size_t i = 0;i<p1.size();i++) {
+        double d = p1[i]-p2[i];
+        s+=d*d;
+    }
+    return std::sqrt(s);
+}
+double error_function(double x) {
+    return std::erf(x);
+}
+double complementary_error_function(double x) {
+    return std::erfc(x);
+}
+double exponential_function(double x) {
+    return std::exp(x);
+}
+double base_2_exponential_function(double x) {
+    return std::exp2(x);
+}
+double exponential_minus_one(double x) {
+    return std::expm1(x);
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
+    m.attr("e") = 2.718281828459045;
     m.def("acos", &arccos, py::arg("x"), "inverse cosine");
     m.def("acosh", &arcosh, py::arg("x"), "inverse hyperbolic cosine");
     m.def("asin", &arcsin, py::arg("x"), "inverse sine");
@@ -75,5 +114,14 @@ PYBIND11_MODULE(MATH, m) {
     m.def("ceil", &ceiling_function, py::arg("x"), "ceiling function");
     m.def("comb", &comb, py::arg("n"), py::arg("k"), "combination number");
     m.def("copysign", &copy_sign, py::arg("x"), py::arg("y"), "copy sign");
+    m.def("cos", &cosine, py::arg("x"), "cosine in trigonometric functions");
+    m.def("cosh", &hyperbolic_cosine, py::arg("x"), "inverse cosine");
+    m.def("degrees", &Deg, py::arg("x"), "radius to degrees");
+    m.def("dist", &dist, py::arg("p1"), py::arg("p2"), "Euclidean distance");
+    m.def("erf", &error_function, py::arg("x"), "error function");
+    m.def("erfc", &complementary_error_function, py::arg("x"), "complementary error function");
+    m.def("exp", &exponential_function, py::arg("x"), "exponential function");
+    m.def("exp2", &base_2_exponential_function, py::arg("x"), "base-2 exponential function");
+    m.def("expm1", &exponential_minus_one, py::arg("x"), "exp(x)-1");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
