@@ -100,6 +100,9 @@ double base_2_exponential_function(double x) {
 double exponential_minus_one(double x) {
     return std::expm1(x);
 }
+float float_abs(float x) {
+    return std::fabs(x);
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
@@ -123,5 +126,6 @@ PYBIND11_MODULE(MATH, m) {
     m.def("exp", &exponential_function, py::arg("x"), "exponential function");
     m.def("exp2", &base_2_exponential_function, py::arg("x"), "base-2 exponential function");
     m.def("expm1", &exponential_minus_one, py::arg("x"), "exp(x)-1");
+    n.def("fabs", &float_abs, py::arg("x"), "abs for floating point numbers")
     py::register_exception<std::domain_error>(m, "DomainError");
 }
