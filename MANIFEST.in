@@ -1,2 +1,5 @@
 include README.md
 include TKGUI_helloworld.jpg
+include LICENSE
+include bracket/*.cpp
+include bracket/*.h

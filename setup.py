@@ -1,6 +1,18 @@
 # setup.py
 from pathlib import Path
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
+
+import pybind11
+
+ext = Extension(
+    "bracket.MATH",
+    sources=["bracket/MATH.cpp"],
+    include_dirs=[
+        pybind11.get_include()
+    ],
+    language="c++",
+    extra_compile_args=["-std=c++14", "-O3"]
+)
 
 # 读取 README
 readme_path = Path(__file__).parent / "README.md"
@@ -8,8 +20,9 @@ long_description = readme_path.read_text(encoding="utf-8") if readme_path.exists
 
 setup(
     name="bracket-lang",
-    version="0.4.0",
+    version="0.5.0",
     packages=find_packages(),
+    ext_modules=[ext],
     entry_points={
         "console_scripts": [
             "bracket = bracket.cli:main",
