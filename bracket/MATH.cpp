@@ -110,6 +110,9 @@ long long factorial(size_t x) {
     }
     return fac;
 }
+long long floor_function(double x) {
+    return static_cast<long long>(std::floor(x));
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
@@ -135,5 +138,6 @@ PYBIND11_MODULE(MATH, m) {
     m.def("expm1", &exponential_minus_one, py::arg("x"), "exp(x)-1");
     m.def("fabs", &float_abs, py::arg("x"), "abs for floating point numbers");
     m.def("factorial", &factorial, py::arg("x"), "positive integer factorial");
+    m.def("floor", &floor_function, py::arg("x"), "floor function");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
