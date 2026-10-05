@@ -103,6 +103,13 @@ double exponential_minus_one(double x) {
 float float_abs(float x) {
     return std::fabs(x);
 }
+long long factorial(size_t x) {
+    long long fac = 1;
+    for (size_t i = 2;i<=x;i++) {
+        fac*=i;
+    }
+    return fac;
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
@@ -126,6 +133,7 @@ PYBIND11_MODULE(MATH, m) {
     m.def("exp", &exponential_function, py::arg("x"), "exponential function");
     m.def("exp2", &base_2_exponential_function, py::arg("x"), "base-2 exponential function");
     m.def("expm1", &exponential_minus_one, py::arg("x"), "exp(x)-1");
-    n.def("fabs", &float_abs, py::arg("x"), "abs for floating point numbers")
+    m.def("fabs", &float_abs, py::arg("x"), "abs for floating point numbers");
+    m.def("factorial", &factorial, py::arg("x"), "positive integer factorial");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
