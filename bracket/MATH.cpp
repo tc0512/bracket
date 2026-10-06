@@ -141,6 +141,13 @@ double gamma(double x) {
 long long greatest_common_divisor(long long a, long long b) {
     return std::gcd(a, b);
 }
+double hypotenuse(const std::vector<double>& p) {
+    double s = 0.0;
+    for (size_t i = 0;i<p.size();i++) {
+        s+=p[i]*p[i];
+    }
+    return std::sqrt(s);
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
@@ -173,5 +180,6 @@ PYBIND11_MODULE(MATH, m) {
     m.def("fsum", &kahan_sum, py::arg("v"), "sum for floating point numbers");
     m.def("gamma", &gamma, py::arg("x"), "Gamma function");
     m.def("gcd", &greatest_common_divisor, py::arg("a"), py::arg("b"), "greatest common divisor");
+    m.def("hypot", &hypotenuse, py::arg("p"), "hypotenuse");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
