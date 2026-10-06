@@ -11,7 +11,7 @@ ext = Extension(
         pybind11.get_include()
     ],
     language="c++",
-    extra_compile_args=["-std=c++14", "-O3"]
+    extra_compile_args=["-std=c++17", "-O3"]
 )
 
 # 读取 README
