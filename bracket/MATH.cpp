@@ -3,6 +3,7 @@
 #include<cmath>
 #include<stdexcept>
 #include<string>
+#include<numeric>
 namespace py = pybind11;
 constexpr double PI = 3.14159265358979323846;
 double arccos(double x) {
@@ -100,7 +101,7 @@ double base_2_exponential_function(double x) {
 double exponential_minus_one(double x) {
     return std::expm1(x);
 }
-float float_abs(float x) {
+double float_abs(double x) {
     return std::fabs(x);
 }
 long long factorial(size_t x) {
@@ -112,6 +113,33 @@ long long factorial(size_t x) {
 }
 long long floor_function(double x) {
     return static_cast<long long>(std::floor(x));
+}
+double float_mod(double x, double y) {
+    return std::fmod(x, y);
+}
+py::tuple frexp_py(double x) {
+    int e;
+    double m = std::frexp(x, &e);
+    return py::make_tuple(m, e);
+}
+double ldexp_py(double m, int e) {
+    return std::ldexp(m, e);
+}
+double kahan_sum(const std::vector<double>& v) {
+    double s = 0.0, c = 0.0;
+    for (double x : v) {
+        double y = x-c;
+        double t = s+y;
+        c = (t-s)-y;
+        s = t;
+    }
+    return s;
+}
+double gamma(double x) {
+    return std::tgamma(x);
+}
+long long greatest_common_divisor(long long a, long long b) {
+    return std::gcd(a, b);
 }
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
@@ -139,5 +167,11 @@ PYBIND11_MODULE(MATH, m) {
     m.def("fabs", &float_abs, py::arg("x"), "abs for floating point numbers");
     m.def("factorial", &factorial, py::arg("x"), "positive integer factorial");
     m.def("floor", &floor_function, py::arg("x"), "floor function");
+    m.def("fmod", &float_mod, py::arg("x"), py::arg("y"), "mod for floating point numbers");
+    m.def("frexp", &frexp_py, py::arg("x"), "x=m·2^e");
+    m.def("ldexp", &ldexp_py, py::arg("m"), py::arg("e"), "m·2^e");
+    m.def("fsum", &kahan_sum, py::arg("v"), "sum for floating point numbers");
+    m.def("gamma", &gamma, py::arg("x"), "Gamma function");
+    m.def("gcd", &greatest_common_divisor, py::arg("a"), py::arg("b"), "greatest common divisor");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
