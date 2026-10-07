@@ -94,6 +94,13 @@ root.geometry("300x200")
 [VAR] [label] [Tag(root, text="Hello, World!")]
 label.pack()
 root.mainloop()
+
+# 数学计算
+[USE] [MATH]
+[INFO] [sqrt(2)] # 1.414213562373095
+[INFO] [comb(1, 1)] # 1
+[INFO] [prod([1, 2])] # 2
+[INFO] [sumprod([6, 6], [7, 7])] # 84
 ```
 输出: 
 ```text
@@ -116,7 +123,13 @@ Loading... complete
 100
 hello
 2
-警告信息[yellow]
+[yellow]警告信息[/yellow]
+(显示窗口)
+(点击窗口上的叉)
+1.414213562373095
+1
+2
+84
 ```
 ![窗口显示: ](./TKGUI_helloHello.jpg)
 打包:
@@ -139,4 +152,5 @@ bracket pack main.bracket
 4. `[LOOP]`是无限循环, 与`[WHILE] [True]`等效
 5. 变量名不能与bracket关键字和python关键字重名
 6. bracket语言不兼容python的列表推导式, 三元表达式等
-7. bracket内置轻量编辑器bkted
+7. 数学标准库需编译, 可能需要几十秒钟的时间, 请耐心等待
+8. bracket内置轻量编辑器bkted
