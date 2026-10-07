@@ -178,6 +178,18 @@ long long least_common_multiple(long long a, long long b) {
 double ln_gamma(double x) {
     return std::lgamma(x);
 }
+double ln(double x) {
+    return std::log(x);
+}
+double log_10(double x) {
+    return std::log10(x);
+}
+double log_2(double x) {
+    return std::log2(x);
+}
+double logarithm_of_1_plus_x(double x) {
+    return std::log1p(x);
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
@@ -219,5 +231,9 @@ PYBIND11_MODULE(MATH, m) {
     m.def("isqrt", &isqrt, py::arg("n"), "integer square root");
     m.def("lcm", &least_common_multiple, py::arg("a"), py::arg("b"), "least common multiple");
     m.def("lgamma", &ln_gamma, py::arg("x"), "ln|gamma(x)|");
+    m.def("log", &ln, py::arg("x"), "ln(x)");
+    m.def("log10", &log_10, py::arg("x"), "log base 10");
+    m.def("log2", &log_2, py::arg("x"), "log base 2");
+    m.def("log1p", &logarithm_of_1_plus_x, py::arg("x"), "ln(x+1)");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
