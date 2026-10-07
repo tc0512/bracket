@@ -4,6 +4,7 @@
 #include<stdexcept>
 #include<string>
 #include<numeric>
+#include<limits>
 namespace py = pybind11;
 constexpr double PI = 3.14159265358979323846;
 double arccos(double x) {
@@ -151,6 +152,7 @@ double hypotenuse(const std::vector<double>& p) {
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
+    m.attr("inf") = std::numeric_limits<double>::infinity();
     m.def("acos", &arccos, py::arg("x"), "inverse cosine");
     m.def("acosh", &arcosh, py::arg("x"), "inverse hyperbolic cosine");
     m.def("asin", &arcsin, py::arg("x"), "inverse sine");
