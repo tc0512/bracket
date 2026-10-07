@@ -6,6 +6,7 @@
 #include<numeric>
 #include<limits>
 #include<algorithm>
+#include<vector>
 namespace py = pybind11;
 constexpr double PI = 3.14159265358979323846;
 double arccos(double x) {
@@ -198,9 +199,61 @@ py::tuple modf_py(double x) {
 double next_after(double x, double y) {
     return std::nextafter(x, y);
 }
+long long perm(long long n, long long k) {
+    if (k < 0 || k > n) {
+        return 0;
+    }
+    long long r = 1;
+    for (long long i = 0; i<k; i++) {
+        r*=(n-i);
+    }
+    return r;
+}
+long double power(long double x, long double y) {
+    return std::pow(x, y);
+}
+double prod(const std::vector<double>& v) {
+    return std::accumulate(v.begin(), v.end(), 1.0, std::multiplies<double>());
+}
+double Rad(double x) {
+    return x*PI/180;
+}
+double remainder_py(double x, double y) {
+    return std::remainder(x, y);
+}
+double sin_func(double x) {
+    return std::sin(x);
+}
+double sinh_func(double x) {
+    return std::sinh(x);
+}
+double tan_func(double x) {
+    return std::tan(x);
+}
+double tanh_func(double x) {
+    return std::tanh(x);
+}
+double square_root(double x) {
+    return std::sqrt(x);
+}
+double sumprod(const std::vector<double>& a, const std::vector<double>& b) {
+    if (a.size() != b.size())
+        throw std::invalid_argument("sumprod: size mismatch");
+    return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
+}
+long long trunc_func(double x) {
+    return static_cast<long long>(std::trunc(x));
+}
+double ulp(double x) {
+    if (x < 0) x = -x;
+    double next = std::nextafter(x, std::numeric_limits<double>::infinity());
+    return next - x;
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
+    m.attr("pi") = 3.14159265358979323846;
+    m.attr("tau") = 6.283185307179586;
     m.attr("inf") = std::numeric_limits<double>::infinity();
     m.attr("nan") = std::numeric_limits<double>::quiet_NaN();
     m.def("acos", &arccos, py::arg("x"), "inverse cosine");
@@ -246,5 +299,18 @@ PYBIND11_MODULE(MATH, m) {
     m.def("log1p", &logarithm_of_1_plus_x, py::arg("x"), "ln(x+1)");
     m.def("modf", &modf_py, py::arg("x"), "split a decimal into integer part and decimal part");
     m.def("nextafter", &next_after, py::arg("x"), py::arg("y"), "next floating point number");
+    m.def("perm", &perm, py::arg("n"), py::arg("k"), "permutation");
+    m.def("pow", &power, py::arg("x"), py::arg("y"), "power");
+    m.def("prod", &prod, py::arg("v"), "product");
+    m.def("radius", &Rad, py::arg("x"), "degrees to radius");
+    m.def("remainder", &remainder_py, py::arg("x"), py::arg("y"), "x-round(x/y)·y");
+    m.def("sin", &sin_func, py::arg("x"), "sine");
+    m.def("sinh", &sinh_func, py::arg("x"), "hyperbolic sine");
+    m.def("tan", &tan_func, py::arg("x"), "tangent");
+    m.def("tanh", &tanh_func, py::arg("x"), "hyperbolic tangent");
+    m.def("sqrt", &square_root, py::arg("x"), "square root");
+    m.def("sumprod", &sumprod, py::arg("a"), py::arg("b"), "∑ aᵢ bᵢ");
+    m.def("trunc", &trunc_func, py::arg("x"), "truncate");
+    m.def("ulp", &ulp, py::arg("x"), "unit in the last place");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
