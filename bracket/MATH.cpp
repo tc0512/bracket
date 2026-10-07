@@ -166,6 +166,12 @@ bool is_inf(double x) {
 bool is_nan(double x) {
     return std::isnan(x);
 }
+long long isqrt(long long n) {
+    long long r = static_cast<long long>(std::sqrt(n));
+    while (r * r > n) --r;
+    while ((r + 1) * (r + 1) <= n) ++r;
+    return r;
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
@@ -204,5 +210,6 @@ PYBIND11_MODULE(MATH, m) {
     m.def("isfinite", &is_finite, py::arg("x"), "is finite");
     m.def("isinf", &is_inf, py::arg("x"), "is inf");
     m.def("isnan", &is_nan, py::arg("x"), "is nan");
+    m.def("isqrt", &isqrt, py::arg("n"), "integer square root");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
