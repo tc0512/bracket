@@ -218,6 +218,6 @@ PYBIND11_MODULE(MATH, m) {
     m.def("isnan", &is_nan, py::arg("x"), "is nan");
     m.def("isqrt", &isqrt, py::arg("n"), "integer square root");
     m.def("lcm", &least_common_multiple, py::arg("a"), py::arg("b"), "least common multiple");
-    m.def("lgamma", &ln_gamma, py::arg("x"), "ln|gamma(x)|")
+    m.def("lgamma", &ln_gamma, py::arg("x"), "ln|gamma(x)|");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
