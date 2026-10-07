@@ -190,6 +190,11 @@ double log_2(double x) {
 double logarithm_of_1_plus_x(double x) {
     return std::log1p(x);
 }
+py::tuple modf_py(double x) {
+    double i;
+    double f = std::modf(x, &i);
+    return py::make_tuple(f, i);
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
@@ -235,5 +240,6 @@ PYBIND11_MODULE(MATH, m) {
     m.def("log10", &log_10, py::arg("x"), "log base 10");
     m.def("log2", &log_2, py::arg("x"), "log base 2");
     m.def("log1p", &logarithm_of_1_plus_x, py::arg("x"), "ln(x+1)");
+    m.def("modf", &modf_py, py::arg("x"), "split a decimal into integer part and decimal part");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
