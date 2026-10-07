@@ -302,7 +302,7 @@ PYBIND11_MODULE(MATH, m) {
     m.def("perm", &perm, py::arg("n"), py::arg("k"), "permutation");
     m.def("pow", &power, py::arg("x"), py::arg("y"), "power");
     m.def("prod", &prod, py::arg("v"), "product");
-    m.def("radius", &Rad, py::arg("x"), "degrees to radius");
+    m.def("radians", &Rad, py::arg("x"), "degrees to radians");
     m.def("remainder", &remainder_py, py::arg("x"), py::arg("y"), "x-round(x/y)·y");
     m.def("sin", &sin_func, py::arg("x"), "sine");
     m.def("sinh", &sinh_func, py::arg("x"), "hyperbolic sine");
