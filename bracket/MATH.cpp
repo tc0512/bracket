@@ -160,6 +160,12 @@ bool isclose(double a, double b, double rel_tol = 1e-9, double abs_tol = 0.0) {
 bool is_finite(double x) {
     return std::isfinite(x);
 }
+bool is_inf(double x) {
+    return std::isinf(x);
+}
+bool is_nan(double x) {
+    return std::isnan(x);
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
@@ -196,5 +202,7 @@ PYBIND11_MODULE(MATH, m) {
     m.def("hypot", &hypotenuse, py::arg("p"), "hypotenuse");
     m.def("isclose", &isclose, py::arg("a"), py::arg("b"), py::arg("rel_tol") = 1e-9, py::arg("abs_tol") = 0.0, "check whether a number is close to another number");
     m.def("isfinite", &is_finite, py::arg("x"), "is finite");
+    m.def("isinf", &is_inf, py::arg("x"), "is inf");
+    m.def("isnan", &is_nan, py::arg("x"), "is nan");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
