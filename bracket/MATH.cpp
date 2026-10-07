@@ -5,6 +5,7 @@
 #include<string>
 #include<numeric>
 #include<limits>
+#include<algorithm>
 namespace py = pybind11;
 constexpr double PI = 3.14159265358979323846;
 double arccos(double x) {
@@ -149,6 +150,13 @@ double hypotenuse(const std::vector<double>& p) {
     }
     return std::sqrt(s);
 }
+bool isclose(double a, double b, double rel_tol = 1e-9, double abs_tol = 0.0) {
+    if (a == b) {
+        return true;
+    }
+    double diff = std::abs(a-b);
+    return diff<=std::max(rel_tol*std::max(std::abs(a), std::abs(b)), abs_tol);
+}
 PYBIND11_MODULE(MATH, m) {
     m.doc() = "math module for bracket-lang";
     m.attr("e") = 2.718281828459045;
@@ -183,5 +191,6 @@ PYBIND11_MODULE(MATH, m) {
     m.def("gamma", &gamma, py::arg("x"), "Gamma function");
     m.def("gcd", &greatest_common_divisor, py::arg("a"), py::arg("b"), "greatest common divisor");
     m.def("hypot", &hypotenuse, py::arg("p"), "hypotenuse");
+    m.def("isclose", &isclose, py::arg("a"), py::arg("b"), py::arg("rel_tol") = 1e-9, py::arg("abs_tol") = 0.0, "check whether a number is close to another number");
     py::register_exception<std::domain_error>(m, "DomainError");
 }
